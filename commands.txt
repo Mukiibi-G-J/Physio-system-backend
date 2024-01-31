@@ -1,0 +1,2 @@
+pip install mssql-django
+pip install djangorestframework-simplejwt
