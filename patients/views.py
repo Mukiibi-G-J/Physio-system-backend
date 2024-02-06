@@ -53,13 +53,13 @@ class PatientsClinicMasterDetail(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            patient_no = self.kwargs.get("pk")
-            clinic_master_patient = Patients.objects.filter(patientno=patient_no)
-            patient_in_physio_db = Patient.objects.filter(patient_no=patient_no)
+            patientno = self.kwargs.get("pk")
+            clinic_master_patient = Patients.objects.filter(patientno=patientno)
+            patient_in_physio_db = Patient.objects.filter(patientno=patientno)
         
             if patient_in_physio_db.exists():
                 patient_has_admission = PhysioSessionAdmission.objects.filter(
-                    patient__patient_no=patient_no
+                    patient__patientno=patientno
                 ).filter(discharge=False)
                 if patient_has_admission.exists():
                     #! more code  to be added here
@@ -77,7 +77,7 @@ class PatientsClinicMasterDetail(generics.RetrieveAPIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
-class TherapyPatient(generics.CreateAPIView):
+class TherapyPatient(generics.ListCreateAPIView):
     queryset = Patient.objects.all()
     serializer_class = PatientsTherapySerializer
     lookup_field = "pk"
@@ -89,13 +89,13 @@ class TherapyPatient(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         #if patient exits return json response patient already exits
         # else create patient
-        try:
+        # try:
             print(request.data)
-            patient_no = request.data["patient_no"]
-            existing_patient = Patient.objects.filter(patient_no=patient_no)
+            patientno = request.data["patientno"]
+            existing_patient = Patient.objects.filter(patientno=patientno)
             if existing_patient.exists():
                 existing_patient_admission = PhysioSessionAdmission.objects.filter(
-                    patient__patient_no=patient_no
+                    patient__patientno=patientno
                 ).filter(discharge=False)
                 if existing_patient_admission.exists():
                     response = {**request.data, 'patient_exists': True, 'addmission_status': True}
@@ -105,8 +105,9 @@ class TherapyPatient(generics.CreateAPIView):
                 return Response(response)
             # return self.create(request, *args, **kwargs)
             return super().post(request, *args, **kwargs)
-        except Exception as e:
-            # Handle exceptions here if needed
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # except Exception as e:
+        #     # Handle exceptions here if needed
+        #     print(e)
+        #     return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
    

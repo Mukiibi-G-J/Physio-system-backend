@@ -5,4 +5,5 @@ urlpatterns = [
     path("patients_search/", PatientsClinicMasterList.as_view(), name="patient_search"),
     path('create/', TherapyPatient.as_view(), name="create"),
     path('detail/<str:pk>/', PatientsClinicMasterDetail.as_view(), name="detail"),
+    path('' , TherapyPatient.as_view(), name="patient_list")
 ]

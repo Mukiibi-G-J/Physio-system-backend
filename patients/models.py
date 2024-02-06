@@ -3,11 +3,11 @@ from authentication.models import CustomUser
 
 
 class Patient(models.Model):
-    patient_no = models.CharField(max_length=255, unique=True)
+    patientno = models.CharField(max_length=255, unique=True)
     gender = models.CharField(max_length=10)
     address = models.CharField(max_length=200)
-    date_of_birth = models.DateField(auto_now_add=False)
-    phone_number = models.CharField(max_length=10)
+    dob = models.DateField(auto_now_add=False)
+    phoneno = models.CharField(max_length=10)
     lastname = models.CharField(max_length=255)
     firstname = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now=True)
